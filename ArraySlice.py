@@ -31,6 +31,8 @@ def Array_Slice_Test():
                [3,7,9]]
     # data_list.toarray()
     data_list=np.array(data_list)
+    #二维数组:[[],[]]
+    # [ [1 2 3] [1 2 1] ...]
     print 'data_list：'+str(data_list)
     #取二维数组中第一维的所有数据
     print 'X[:,0]结果输出为：'
@@ -45,6 +47,16 @@ def Array_Slice_Test():
     #取二维数组中第m维到第n-1维的所有数据
     print data_list[:,0:1] #[[1][1]...]
     print data_list[:,0:2] #[[1 2][1 2]...]
+    print 'X[0,:]结果输出为：'
+    print data_list[0,:] #[1 2 3]
+    #取二维数组中第二维的所有数据
+    print 'X[1,:]结果输出为：'
+    print data_list[1,:] #[1 2 1]
+    #取二维数组中第三维的所有数据
+    print 'X[1,m:n]结果输出为：'
+    #取二维数组中第m维到第n-1维的所有数据
+    print data_list[0,0:1] #[1]
+    print data_list[1,0:2] #[1 2]
 
 
     #三维列表
@@ -58,6 +70,7 @@ def Array_Slice_Test():
                [[1,5],[1,20],[3,24],[17,9],[4,10]],
                [[11,2],[1,110],[3,14],[7,4],[4,2]]]
     data_list=np.array(data_list)
+    #三维矩阵[ [[  1   2][  1   0][  3   4][  7   9][  4   0]]  [[  1   2][  1   0][  3   4][  7   9][  4   0]] ...]
     print 'data_list：'+str(data_list)
     #取三维矩阵中第一维的所有数据
     print 'X[:,:,0]结果输出为：'
