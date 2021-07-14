@@ -12,19 +12,24 @@ __Author__:zhouhanjiang
 '''
 
 import os
+import time
+
 from Utils.logger import get_logger
 
 logger = get_logger(
-    os.path.basename(os.path.abspath(__file__)),
-    os.path.abspath(__file__),
-    level="INFO",
-    log_file_max_bytes=1024 * 1024)
+        os.path.basename(os.path.abspath(__file__)),
+        os.path.abspath(__file__),
+        level="INFO",
+        log_file_max_bytes=1024 * 1024)
 
 # import builtins as __builtin__
 
 
 def print(*args, **kwargs):
-    """My custom print() function."""
+    """
+        overwrite print
+    """
+    # My custom print() function.
     # Adding new arguments to the print function signature
     # is probably a bad idea.
     # Instead consider testing if custom argument keywords
