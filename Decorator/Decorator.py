@@ -11,6 +11,28 @@ __Author__:zhouhanjiang
 学习Python中装饰器
 '''
 
+import os
+from Utils.logger import get_logger
+
+logger = get_logger(
+    os.path.basename(os.path.abspath(__file__)),
+    os.path.abspath(__file__),
+    level="INFO",
+    log_file_max_bytes=1024 * 1024)
+
+# import builtins as __builtin__
+
+
+def print(*args, **kwargs):
+    """My custom print() function."""
+    # Adding new arguments to the print function signature
+    # is probably a bad idea.
+    # Instead consider testing if custom argument keywords
+    # are present in kwargs
+    # __builtin__.print('My overridden print() function!')
+    # return __builtin__.print(*args, **kwargs)
+    return logger.info(*args, **kwargs)
+
 
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
