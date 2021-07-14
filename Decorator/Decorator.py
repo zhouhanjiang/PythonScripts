@@ -150,6 +150,13 @@ def multi_deco_test_with_return(*args, **kwargs):
 # ------------------------------------------------------------------------------
 
 
+def just_for_wraps_test():
+    """
+        just_for_wraps_test
+    """
+    print("just_for_wraps_test")
+
+
 def decorator_test():
     """
         decorator_test
@@ -188,6 +195,35 @@ def decorator_test():
     step11.deco3_para_without_wrapper_innder end
     multi_deco_test_result=('args_para1', 'args_para2')
     '''
+
+    print("")
+
+    #  区分有无 @wraps 的差异
+    # step1.deco1_with_wrapper start
+    # in deco1_with_wrapper.func.__name__=just_for_wraps_test
+    # step4.deco1_with_wrapper end
+    # deco1 name=just_for_wraps_test
+    # deco1 doc=None   ---- 为啥是 None?????
+    deco1 = deco1_with_wrapper(just_for_wraps_test)
+    print("deco1 name=" + str(deco1.__name__))
+    print("deco1 doc=" + str(deco1.__doc__))
+    # step5.deco2_without_wrapper start
+    # in deco2_without_wrapper.func.__name__=just_for_wraps_test
+    # step8.deco2_without_wrapper end
+    # deco2 name=deco_without_wrapper_innder
+    # deco2 doc= deco_without_wrapper_innder
+    deco2 = deco2_without_wrapper(just_for_wraps_test)
+    print("deco2 name=" + str(deco2.__name__))
+    print("deco2 doc=" + str(deco2.__doc__))
+
+    # step9.deco3_para_without_wrapper start
+    # in deco3_para_without_wrapper.deco_para=test
+    # step12.deco3_para_without_wrapper end
+    # deco3 name=deco3_innder
+    # deco3 doc= deco3_innder
+    deco3 = deco3_para_without_wrapper("test")
+    print("deco3 name=" + str(deco3.__name__))
+    print("deco3 doc=" + str(deco3.__doc__))
 
 
 if __name__ == '__main__':
