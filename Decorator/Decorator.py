@@ -11,11 +11,14 @@
 
 from __future__ import division
 
+# @wraps 接受一个函数来进行装饰，并加入了复制函数名称、注释文档、参数列表等等的功能。这可以让我们在装饰器里面访问在装饰之前的函数的属性
+# 保留函数的名字和注释文档(docstring)
 from functools import wraps
 
 '''
 __Author__:zhouhanjiang
 学习Python中装饰器
+https://www.runoob.com/w3cnote/python-func-decorators.html
 '''
 
 import os
@@ -139,6 +142,7 @@ def multi_deco_test_with_return(*args, **kwargs):
        multi_deco_test_with_return
     """
     print('multi_deco_test called')
+    print(kwargs)
     return args
 
 
