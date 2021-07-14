@@ -10,6 +10,7 @@
 """
 
 import os
+import time
 
 from Utils.logger import get_logger
 
@@ -45,6 +46,38 @@ class RestartMyself:
 
     def __del__(self):
         pass
+
+    def restart_if_changed(self):
+        """
+            restart_if_changed
+            https://blog.petrzemek.net/2014/03/23/restarting-a-python-script-within-itself/
+        """
+        # Check if the file has changed.
+        # If so, restart the application.
+        import sys
+        last_mtime = os.path.getmtime(__file__)
+
+        old_pid = os.getpid()
+        self.pid = old_pid
+        print("old_pid=" + str(old_pid))
+
+        while True:
+            if os.path.getmtime(__file__) > last_mtime:
+                print('file has changed => restarting')
+
+                # Restart the application (os.execv() does not return).
+                # os.execv(__file__, sys.argv)
+                os.execv(sys.executable, ['python'] + sys.argv)
+
+                # 下面的语句不会执行到,因为已经重新启动一个新的进程了
+                new_pid = os.getpid()
+                self.pid = new_pid
+                print("new_pid=" + str(new_pid))
+
+                break
+            else:
+                print('file not changed')
+                time.sleep(5)
 
     # 不断重启程序(外部)
     def restart_myself(self, repeat_time=1, interval=30):
@@ -87,4 +120,5 @@ class RestartMyself:
 if __name__ == '__main__':
     # 极容易导致死循环,慎用(建议重启间隔不小于30S,以便外部终止)
     restart_myself_cls = RestartMyself()
-    restart_myself_cls.restart_myself()
+    # restart_myself_cls.restart_myself()
+    restart_myself_cls.restart_if_changed()
