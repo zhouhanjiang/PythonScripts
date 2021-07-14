@@ -10,6 +10,7 @@
 """
 
 
+# 单例模式
 def singleton(cls):
     """
 
