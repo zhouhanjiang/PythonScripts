@@ -1,16 +1,90 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# Filename: __init__.py
+# Author: zhouhanjiang@xunlei.com
+# Create: 2021/07/14 10:03
+# LastMod: 2021/07/14 10:03
+
+"""
+        __init__.py
+"""
+
+import os
+
+from Utils.logger import get_logger
+
+logger = get_logger(
+        os.path.basename(os.path.abspath(__file__)),
+        os.path.abspath(__file__),
+        level="INFO",
+        log_file_max_bytes=1024 * 1024)
+
+# import builtins as __builtin__
 
 
-#不断重启程序(外部)
-def restart_myself():
-  import time,os,sys
-  print "Restart 3 secods later"
-  time.sleep(3)
-  python = sys.executable
-  os.execl(python, python, * sys.argv)
-  return 0
+def print(*args, **kwargs):
+    """
+        overwrite print
+    """
+    # My custom print() function.
+    # Adding new arguments to the print function signature
+    # is probably a bad idea.
+    # Instead consider testing if custom argument keywords
+    # are present in kwargs
+    # __builtin__.print('My overridden print() function!')
+    # return __builtin__.print(*args, **kwargs)
+    return logger.info(*args, **kwargs)
 
-print "Main Start"
-restart_myself()
-print "Main End"
+
+class RestartMyself:
+    """
+        RestartMyself
+    """
+    def __init__(self):
+        self.pid = -1
+
+    def __del__(self):
+        pass
+
+    # 不断重启程序(外部)
+    def restart_myself(self, repeat_time=1, interval=30):
+        """
+           restart_myself
+        """
+        restart_myself_flag = False
+        try:
+            import time
+            import os
+            import sys
+            print("repeat_time=" + str(repeat_time))
+            print("interval=" + str(interval))
+
+            for repeat_index in range(repeat_time):
+                print("repeat_index=" + str(repeat_index))
+                old_pid = os.getpid()
+                self.pid = old_pid
+                print("old_pid=" + str(old_pid))
+                time.sleep(interval)
+                # python = sys.executable
+                # os.execl(python, python, * sys.argv)
+                # https://stackoverflow.com/questions/11329917/restart-python-script-from-within-itself
+                os.execv(sys.executable, ['python'] + sys.argv)
+
+                # 下面的语句不会执行到,因为已经重新启动一个新的进程了
+                new_pid = os.getpid()
+                self.pid = new_pid
+                print("new_pid=" + str(new_pid))
+
+            restart_myself_flag = True
+            print("restart_myself_flag=" + str(restart_myself_flag))
+            return restart_myself_flag
+
+        except Exception as msg:
+            logger.warning("err,msg=" + str(msg))
+            return restart_myself_flag
+
+
+if __name__ == '__main__':
+    # 极容易导致死循环,慎用(建议重启间隔不小于30S,以便外部终止)
+    restart_myself_cls = RestartMyself()
+    restart_myself_cls.restart_myself()
