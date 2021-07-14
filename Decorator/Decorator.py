@@ -146,6 +146,39 @@ def multi_deco_test_with_return(*args, **kwargs):
     return args
 
 
+def cls_decorator(cls):
+    """
+       cls_decorator
+    """
+    class CLSWrapper:
+        """
+          CLSWrapper
+        """
+        def __init__(self, *args, **kwargs):
+            self.wrapped = cls(*args, **kwargs)
+
+        def __getattr__(self, name):
+            return getattr(self.wrapped, name)
+
+    return CLSWrapper
+
+
+# https://www.cnblogs.com/f-ck-need-u/p/10205168.html
+@cls_decorator
+class CLS:
+    """
+        CLS
+    """
+    def __init__(self, x, y):
+        self.attrx = x
+        self.attry = y
+
+    def attr_method(self):
+        """
+            attr_method
+        """
+        return self.attrx, self.attry
+
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 
@@ -224,6 +257,12 @@ def decorator_test():
     deco3 = deco3_para_without_wrapper("test")
     print("deco3 name=" + str(deco3.__name__))
     print("deco3 doc=" + str(deco3.__doc__))
+
+    # 类装饰器
+    c = CLS(3, 4)
+    print("CLS.attrx=" + str(c.attrx))
+    print("CLS.attry=" + str(c.attry))
+    print("CLS.attr_method=" + str(c.attr_method()))
 
 
 if __name__ == '__main__':
